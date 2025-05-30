@@ -33,77 +33,21 @@
         }
 
         .game-header {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            background: #2196F3;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 14px;
             font-weight: 600;
-            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
-        }
-
-        .brand-header {
-            background: white;
-            padding: 8px 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .brand-logo-header {
-            height: 35px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .brand-logo-header img {
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .brand-text {
-            color: #ff6b6b;
-            font-size: 16px;
-            font-weight: bold;
-            margin-left: 10px;
         }
 
         .game-area {
             position: relative;
-            height: 347px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            height: 450px;
+            background: #f5f5f5;
             overflow: hidden;
-            border-top: 3px solid #ff6b6b;
-            border-bottom: 3px solid #ff6b6b;
-        }
-
-        .floating-brand {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 5px 10px;
-            border-radius: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .floating-brand img {
-            height: 20px;
-            object-fit: contain;
-        }
-
-        .floating-brand-text {
-            color: #ff6b6b;
-            font-size: 10px;
-            font-weight: bold;
         }
 
         .walls-container {
@@ -249,64 +193,23 @@
         }
 
         .game-controls {
-            padding: 5px 20px;
+            padding: 20px;
             text-align: center;
-            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-            border-top: 2px solid #ff6b6b;
-        }
-
-        .brand-strip {
-            background: linear-gradient(90deg, #ff6b6b, #ee5a24, #ff6b6b);
-            color: white;
-            padding: 8px 15px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+            background: #f8f9fa;
         }
 
         .tap-instruction {
-            font-size: 14px;
+            font-size: 15px;
             color: #495057;
-            margin-bottom: 4px;
+            margin-bottom: 12px;
             font-weight: 600;
         }
 
         .brand-message {
-            font-size: 11px;
-            color: #ff6b6b;
+            font-size: 12px;
+            color: #6f42c1;
             font-weight: bold;
-            margin: 3px 0;
-            background: rgba(255, 107, 107, 0.1);
-            padding: 5px 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 107, 107, 0.2);
-        }
-
-        .product-showcase {
-            background: linear-gradient(45deg, rgba(255, 107, 107, 0.1), rgba(238, 90, 36, 0.1));
-            border: 2px solid #ff6b6b;
-            border-radius: 10px;
-            padding: 10px;
-            margin: 4px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .product-mini-logo {
-            height: 25px;
-            object-fit: contain;
-        }
-
-        .product-tagline {
-            color: #ff6b6b;
-            font-size: 6px;
-            font-weight: bold;
-            font-style: italic;
+            margin-top: 12px;
         }
 
         .game-over {
@@ -322,7 +225,6 @@
             align-items: center;
             color: white;
             text-align: center;
-            z-index: 2000; /* Ensure it's on top */
         }
 
         .game-over h2 {
@@ -464,7 +366,7 @@
             margin-bottom: 8px;
         }
 
-        .product-tagline { /* Re-declared, but keeping for context if used differently in slides */
+        .product-tagline {
             font-size: 16px;
             color: #ee5a24;
             font-weight: 600;
@@ -731,16 +633,6 @@
 </head>
 <body>
     <div class="game-container">
-        <!-- Asian Paints Brand Header -->
-        <div class="brand-header">
-            <div class="brand-logo-header">
-                <img src="https://static.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/asian-paints-logo.webp" 
-                     alt="Asian Paints" 
-                     onerror="this.style.display='none'; const altSpan = document.createElement('span'); altSpan.className='brand-text'; altSpan.textContent=this.alt; this.parentNode.insertBefore(altSpan, this);" />
-                <span class="brand-text">Stain Shield Defense</span>
-            </div>
-        </div>
-        
         <div class="game-header">
             <div>Score: <span id="score">0</span></div>
             <div>Time: <span id="time">0</span>s</div>
@@ -748,8 +640,6 @@
         </div>
         
         <div class="game-area" id="gameArea">
-        
-            
             <div class="walls-container">
                 <div class="wall" data-wall="0">
                     <div class="wall-health">████</div>
@@ -767,28 +657,17 @@
         </div>
 
         <div class="game-controls">
-            
             <div class="tap-instruction">🛡️ TAP = Small Shield • HOLD = Medium/Large Shield</div>
-            <div class="product-showcase">
-                <img class="product-mini-logo" src="https://static.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/asian-paints-logo.webp" alt="Asian Paints" onerror="this.style.display='none';" />
-                <span class="product-tagline">"Daag ko daag banne na de"</span>
-            </div>
-            
-            
-            <div class="brand-message">🌊 Experience Lotus Effect Technology (LET) protection!</div>
-            <div class="brand-message">⚡ Just like All Protek repels real stains!</div>
+            <div class="brand-message">🌊 Watch liquid stains bounce diagonally off walls!</div>
+            <div class="brand-message">⚡ Stains zigzag and change direction as they fall!</div>
+            <div class="brand-message">"Daag ko daag banne na de" - Asian Paints</div>
         </div>
 
         <div class="game-over" id="gameOver">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <img src="https://static.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/asian-paints-logo.webp" alt="Asian Paints" style="height: 40px; margin-bottom: 10px;" onerror="this.style.display='none';" />
-            </div>
             <h2>Walls Stained!</h2>
-            <p style="color: #ff6b6b; font-weight: bold; margin: 10px 0;">"Daag ko daag banne na de" - Asian Paints</p>
             <p>Your Score: <span id="finalScore">0</span></p>
             <p>Time Survived: <span id="finalTime">0</span>s</p>
-            <p style="font-size: 14px; margin: 15px 0; color: #ccc;">💡 Try Asian Paints All Protek for real stain protection!</p>
-            <button class="restart-btn" onclick="startGame()">Protect Again with All Protek</button>
+            <button class="restart-btn" onclick="startGame()">Protect Again</button>
         </div>
 
         <div class="tutorial-overlay" id="tutorialOverlay">
@@ -1042,38 +921,49 @@
                 this.stainSpawnRate = 2000;
                 this.wallStains = [[], [], [], []];
                 
+                // Shield Charging with preview
                 this.isCharging = false;
                 this.chargeStartTime = 0;
                 this.chargePosition = { x: 0, y: 0 };
                 this.shieldPreview = null;
                 
-                // Load best score from localStorage
-                this.bestScore = parseInt(localStorage.getItem('stainShieldBestScore')) || 0;
+                this.bestScore = 0;
                 this.bestElement.textContent = this.bestScore;
                 
                 this.init();
             }
 
             init() {
+                // Mouse events
                 this.gameArea.addEventListener('mousedown', (e) => this.startCharging(e));
                 this.gameArea.addEventListener('mouseup', (e) => this.releaseShield(e));
                 this.gameArea.addEventListener('mouseleave', (e) => this.cancelCharging(e));
                 
+                // Touch events
                 this.gameArea.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     const touch = e.touches[0];
-                    this.startCharging({ clientX: touch.clientX, clientY: touch.clientY });
+                    const syntheticEvent = {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    };
+                    this.startCharging(syntheticEvent);
                 });
                 this.gameArea.addEventListener('touchend', (e) => {
                     e.preventDefault();
-                    // No need to pass event details for release if using stored chargePosition
-                    this.releaseShield(); 
+                    const touch = e.changedTouches[0];
+                    const syntheticEvent = {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    };
+                    this.releaseShield(syntheticEvent);
                 });
                 this.gameArea.addEventListener('touchcancel', (e) => {
                     e.preventDefault();
                     this.cancelCharging();
                 });
                 
+                // Show tutorial on first load
                 this.showTutorial();
             }
 
@@ -1096,16 +986,18 @@
                 this.gameRunning = true;
                 this.lastStainSpawn = 0;
                 this.stainSpawnRate = 2000;
-                this.lastTimeUpdate = Math.floor(Date.now() / 1000); // Initialize for time tracking
                 
+                // Reset charging system
                 this.isCharging = false;
                 this.chargeStartTime = 0;
                 
+                // Clear any existing shield preview
                 if (this.shieldPreview && this.shieldPreview.parentNode) {
                     this.shieldPreview.parentNode.removeChild(this.shieldPreview);
                     this.shieldPreview = null;
                 }
                 
+                // Hide overlays
                 this.gameOverScreen.style.display = 'none';
                 this.hideTutorial();
                 
@@ -1113,6 +1005,18 @@
                 this.updateUI();
                 this.updateWallHealth();
                 this.gameLoop();
+            }
+
+            createShield(event) {
+                // This method is now deprecated in favor of the charging system
+                // Kept for compatibility during transition
+                if (!this.gameRunning || this.currentEnergy < 1) return;
+                
+                const rect = this.gameArea.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                
+                this.createShieldAtPosition(x, y, 'small');
             }
 
             startCharging(event) {
@@ -1126,10 +1030,11 @@
                 this.chargeStartTime = Date.now();
                 this.chargePosition = { x, y };
                 
+                // Create shield preview
                 this.createShieldPreview(x, y);
             }
 
-            releaseShield() { // Removed event parameter as chargePosition is now stored
+            releaseShield(event) {
                 if (!this.isCharging || !this.gameRunning) return;
                 
                 const chargeDuration = Date.now() - this.chargeStartTime;
@@ -1143,14 +1048,26 @@
                     shieldSize = 'large';
                 }
                 
+                // Create shield (no energy requirement)
                 this.createShieldAtPosition(this.chargePosition.x, this.chargePosition.y, shieldSize);
-                this.cancelCharging(); // This also removes the preview
+                
+                this.cancelCharging();
+            }
+
+            showEnergyWarning() {
+                // Flash the energy bar red briefly to indicate insufficient energy
+                const energyBar = this.energyBar;
+                energyBar.style.filter = 'hue-rotate(180deg)'; // Makes it red
+                setTimeout(() => {
+                    energyBar.style.filter = 'none';
+                }, 300);
             }
 
             cancelCharging() {
                 this.isCharging = false;
                 this.chargeStartTime = 0;
                 
+                // Remove shield preview
                 if (this.shieldPreview && this.shieldPreview.parentNode) {
                     this.shieldPreview.parentNode.removeChild(this.shieldPreview);
                     this.shieldPreview = null;
@@ -1158,19 +1075,22 @@
             }
 
             createShieldPreview(x, y) {
+                // Remove any existing preview first
                 if (this.shieldPreview && this.shieldPreview.parentNode) {
                     this.shieldPreview.parentNode.removeChild(this.shieldPreview);
+                    this.shieldPreview = null;
                 }
                 
                 this.shieldPreview = document.createElement('div');
                 this.shieldPreview.className = 'shield-preview';
-                // Initial size, will be updated by animatePreview
-                this.shieldPreview.style.width = '40px'; 
-                this.shieldPreview.style.height = '40px';
-                this.shieldPreview.style.left = (x - 20) + 'px';
-                this.shieldPreview.style.top = (y - 20) + 'px';
+                this.shieldPreview.style.left = (x - 30) + 'px';
+                this.shieldPreview.style.top = (y - 30) + 'px';
+                this.shieldPreview.style.width = '60px';
+                this.shieldPreview.style.height = '60px';
+                this.shieldPreview.style.opacity = '0.5';
                 this.gameArea.appendChild(this.shieldPreview);
                 
+                // Animate preview size based on charge duration
                 const animatePreview = () => {
                     if (!this.isCharging || !this.shieldPreview) return;
                     
@@ -1178,11 +1098,14 @@
                     let size, opacity;
                     
                     if (chargeDuration < 200) {
-                        size = 40; opacity = 0.4;
+                        size = 40;
+                        opacity = 0.4;
                     } else if (chargeDuration < 600) {
-                        size = 60; opacity = 0.6;
+                        size = 60;
+                        opacity = 0.6;
                     } else {
-                        size = 80; opacity = 0.8;
+                        size = 80;
+                        opacity = 0.8;
                     }
                     
                     this.shieldPreview.style.width = size + 'px';
@@ -1193,38 +1116,40 @@
                     
                     requestAnimationFrame(animatePreview);
                 };
+                
                 requestAnimationFrame(animatePreview);
             }
 
-                        createShieldAtPosition(x, y, size) {
+            createShieldAtPosition(x, y, size) {
                 const sizes = {
-                    small: { radius: 20, element: 40, class: 'small', duration: 1000 }, // Added duration
-                    medium: { radius: 30, element: 60, class: 'medium', duration: 1800 },// Added duration
-                    large: { radius: 40, element: 80, class: 'large', duration: 2500 }  // Added duration
+                    small: { radius: 20, element: 40, class: 'small' },
+                    medium: { radius: 30, element: 60, class: 'medium' },
+                    large: { radius: 40, element: 80, class: 'large' }
                 };
                 
-                const config = sizes[size] || sizes.small; // Default to small if size is somehow invalid
+                const config = sizes[size] || sizes.small;
                 
                 const shield = {
                     x: x - config.radius,
                     y: y - config.radius,
                     radius: config.radius,
                     element: this.createShieldElement(x - config.radius, y - config.radius, config.element, config.class),
-                    duration: config.duration, // <<< USE DURATION FROM CONFIG
+                    duration: 1200,
                     created: Date.now(),
                     size: size
                 };
                 
                 this.shields.push(shield);
                 
-                // Remove shield after its specific duration
+                // Remove shield after duration
                 setTimeout(() => {
                     if (shield.element && shield.element.parentNode) {
                         shield.element.parentNode.removeChild(shield.element);
                     }
                     this.shields = this.shields.filter(s => s !== shield);
-                }, shield.duration); // shield.duration will now vary
+                }, shield.duration);
             }
+
             createShieldElement(x, y, size, shieldClass) {
                 const shield = document.createElement('div');
                 shield.className = `shield ${shieldClass}`;
@@ -1236,47 +1161,87 @@
                 return shield;
             }
 
+            updateEnergyBar() {
+                const segments = this.energyBar.querySelectorAll('.energy-segment');
+                segments.forEach((segment, index) => {
+                    if (index < this.currentEnergy) {
+                        segment.classList.add('filled');
+                    } else {
+                        segment.classList.remove('filled');
+                    }
+                });
+            }
+
+            regenerateEnergy() {
+                const now = Date.now();
+                if (now - this.lastEnergyRegen >= this.energyRegenRate && this.currentEnergy < this.maxEnergy) {
+                    this.currentEnergy++;
+                    this.lastEnergyRegen = now;
+                    this.updateEnergyBar();
+                }
+            }
+
             spawnStain() {
                 const now = Date.now();
                 if (now - this.lastStainSpawn < this.stainSpawnRate) return;
                 
                 const stainTypes = this.getAvailableStainTypes();
                 const stainType = stainTypes[Math.floor(Math.random() * stainTypes.length)];
+                
+                // Random spawn position along the top edge
                 const spawnX = Math.random() * (this.gameArea.clientWidth - 24);
-                const velocityX = (Math.random() - 0.5) * 3;
+                
+                // Random diagonal movement - some go straight down, others move diagonally
+                const velocityX = (Math.random() - 0.5) * 3; // -1.5 to +1.5 horizontal velocity
                 const velocityY = this.getStainSpeed(stainType);
                 
                 const stain = {
-                    x: spawnX, y: -24, type: stainType, velocityX: velocityX, velocityY: velocityY,
-                    element: this.createStainElement(stainType), bounces: 0,
-                    maxBounces: Math.floor(Math.random() * 3) + 1
+                    x: spawnX,
+                    y: -24,
+                    type: stainType,
+                    velocityX: velocityX,
+                    velocityY: velocityY,
+                    element: this.createStainElement(stainType),
+                    bounces: 0, // Track number of bounces
+                    maxBounces: Math.floor(Math.random() * 3) + 1 // 1-3 bounces before going down
                 };
+                
                 this.stains.push(stain);
                 this.lastStainSpawn = now;
             }
 
             getAvailableStainTypes() {
-                if (this.gameTime < 30) return ['coffee'];
-                else if (this.gameTime < 60) return ['coffee', 'juice'];
-                else return ['coffee', 'juice', 'mud'];
+                if (this.gameTime < 30) {
+                    return ['coffee'];
+                } else if (this.gameTime < 60) {
+                    return ['coffee', 'juice'];
+                } else {
+                    return ['coffee', 'juice', 'mud'];
+                }
             }
 
             getStainSpeed(type) {
-            const baseSpeed = 1.5 + (this.gameTime / 40);
-            const typeMultiplier = {
-                'coffee': 1.1,
-                'juice': 1.3,
-                'mud': 0.9
-            };
-            return baseSpeed * (typeMultiplier[type] || 1.1);
-        }
+                const baseSpeed = 1 + (this.gameTime / 60); // Gradually increase speed
+                const typeMultiplier = {
+                    'coffee': 1,
+                    'juice': 1.2,
+                    'mud': 0.8
+                };
+                return baseSpeed * (typeMultiplier[type] || 1);
+            }
 
             createStainElement(type) {
                 const stain = document.createElement('div');
+                
+                // Randomly assign a droplet shape (1-5)
                 const dropletVariant = Math.floor(Math.random() * 5) + 1;
-                const animationDelay = Math.random() * 2;
+                
+                // Random animation delay for more natural movement
+                const animationDelay = Math.random() * 2; // 0-2 seconds delay
+                
                 stain.className = `stain ${type} droplet-${dropletVariant}`;
                 stain.style.animationDelay = `${animationDelay}s`;
+                
                 this.gameArea.appendChild(stain);
                 return stain;
             }
@@ -1286,29 +1251,36 @@
                 if (!wall) return;
 
                 const stainMark = document.createElement('div');
+                
+                // Randomly assign a splatter shape (1-5)
                 const splatterVariant = Math.floor(Math.random() * 5) + 1;
                 stainMark.className = `wall-stain splatter-${splatterVariant}`;
                 
+                // Different stain colors and sizes
                 const stainStyles = {
                     coffee: { color: '#8B4513', size: Math.random() * 8 + 6 },
                     juice: { color: '#FF6B35', size: Math.random() * 10 + 8 },
                     mud: { color: '#5D4037', size: Math.random() * 12 + 10 }
                 };
+                
                 const style = stainStyles[stainType] || stainStyles.coffee;
                 stainMark.style.width = style.size + 'px';
                 stainMark.style.height = style.size + 'px';
                 stainMark.style.background = `radial-gradient(circle, ${style.color}, ${style.color}AA)`;
                 
+                // Position randomly on the wall, but weighted towards impact point
                 const wallRect = wall.getBoundingClientRect();
                 const gameAreaRect = this.gameArea.getBoundingClientRect();
                 const relativeImpactX = impactX - (wallRect.left - gameAreaRect.left);
                 const wallWidth = wallRect.width;
+                
+                // Create clustering around impact point with some randomness
                 const centerX = (relativeImpactX / wallWidth) * 100;
-                const randomOffset = (Math.random() - 0.5) * 40;
+                const randomOffset = (Math.random() - 0.5) * 40; // +/- 20%
                 const finalX = Math.max(5, Math.min(95, centerX + randomOffset));
                 
                 stainMark.style.left = finalX + '%';
-                stainMark.style.top = Math.random() * 60 + 20 + '%';
+                stainMark.style.top = Math.random() * 60 + 20 + '%'; // Random vertical position
                 
                 wall.appendChild(stainMark);
                 this.wallStains[wallIndex].push(stainMark);
@@ -1317,7 +1289,9 @@
             clearWallStains() {
                 for (let i = 0; i < 4; i++) {
                     this.wallStains[i].forEach(stain => {
-                        if (stain.parentNode) stain.parentNode.removeChild(stain);
+                        if (stain.parentNode) {
+                            stain.parentNode.removeChild(stain);
+                        }
                     });
                     this.wallStains[i] = [];
                 }
@@ -1325,16 +1299,21 @@
 
             updateStains() {
                 this.stains.forEach((stain, index) => {
+                    // Update position with velocity
                     stain.x += stain.velocityX;
                     stain.y += stain.velocityY;
                     
+                    // Bounce off left and right walls
                     if (stain.x <= 0 || stain.x >= this.gameArea.clientWidth - 24) {
                         if (stain.bounces < stain.maxBounces) {
-                            stain.velocityX = -stain.velocityX * 0.8;
-                            stain.x = Math.max(0, Math.min(this.gameArea.clientWidth - 24, stain.x));
+                            stain.velocityX = -stain.velocityX * 0.8; // Reverse direction with some energy loss
+                            stain.x = Math.max(0, Math.min(this.gameArea.clientWidth - 24, stain.x)); // Keep in bounds
                             stain.bounces++;
+                            
+                            // Add slight upward velocity on bounce for more dynamic movement
                             stain.velocityY *= 0.9;
                         } else {
+                            // After max bounces, just move straight down
                             stain.velocityX = 0;
                         }
                     }
@@ -1344,9 +1323,10 @@
                         stain.element.style.top = stain.y + 'px';
                     }
                     
+                    // Check shield collisions
                     let hitShield = false;
                     this.shields.forEach(shield => {
-                        const stainSize = 12; 
+                        const stainSize = 12; // All stains are now the same size
                         const distance = Math.sqrt(
                             Math.pow(stain.x + stainSize - (shield.x + shield.radius), 2) +
                             Math.pow(stain.y + stainSize - (shield.y + shield.radius), 2)
@@ -1354,34 +1334,56 @@
                         
                         if (distance < shield.radius) {
                             hitShield = true;
+                            
+                            // Perfect repel - add bouncing effect
                             this.score += this.getStainPoints(stain.type);
                             this.createParticles(stain.x + stainSize, stain.y + stainSize);
-                            if (stain.element && stain.element.parentNode) stain.element.parentNode.removeChild(stain.element);
+                            
+                            // Remove stain
+                            if (stain.element && stain.element.parentNode) {
+                                stain.element.parentNode.removeChild(stain.element);
+                            }
                             this.stains.splice(index, 1);
                         }
                     });
                     
+                    // Check wall collision
                     if (!hitShield && stain.y > this.gameArea.clientHeight - 100) {
                         const wallIndex = Math.floor(stain.x / (this.gameArea.clientWidth / 4));
                         if (wallIndex >= 0 && wallIndex < 4) {
-                            this.wallHealth[wallIndex] = Math.max(0, this.wallHealth[wallIndex] - 1);
+                            const damage = 1; // All stains do same damage now
+                            this.wallHealth[wallIndex] = Math.max(0, this.wallHealth[wallIndex] - damage);
                             this.createWallStain(wallIndex, stain.type, stain.x + 12);
                             this.updateWallHealth();
-                            if (this.wallHealth.every(health => health <= 0)) this.endGame();
+                            
+                            if (this.wallHealth.every(health => health <= 0)) {
+                                this.endGame();
+                            }
                         }
-                        if (stain.element && stain.element.parentNode) stain.element.parentNode.removeChild(stain.element);
+                        
+                        // Remove stain
+                        if (stain.element && stain.element.parentNode) {
+                            stain.element.parentNode.removeChild(stain.element);
+                        }
                         this.stains.splice(index, 1);
                     }
                     
+                    // Remove stains that went too far down
                     if (stain.y > this.gameArea.clientHeight + 50) {
-                        if (stain.element && stain.element.parentNode) stain.element.parentNode.removeChild(stain.element);
+                        if (stain.element && stain.element.parentNode) {
+                            stain.element.parentNode.removeChild(stain.element);
+                        }
                         this.stains.splice(index, 1);
                     }
                 });
             }
 
             getStainPoints(type) {
-                const points = { 'coffee': 10, 'juice': 15, 'mud': 20 };
+                const points = {
+                    'coffee': 10,
+                    'juice': 15,
+                    'mud': 20
+                };
                 return points[type] || 10;
             }
 
@@ -1402,14 +1404,21 @@
                     const animateParticle = () => {
                         particleLife += 20;
                         if (particleLife > 300) {
-                            if (particle.parentNode) particle.parentNode.removeChild(particle);
+                            if (particle.parentNode) {
+                                particle.parentNode.removeChild(particle);
+                            }
                             return;
                         }
-                        particle.style.left = (parseInt(particle.style.left) + vx) + 'px';
-                        particle.style.top = (parseInt(particle.style.top) + vy) + 'px';
+                        
+                        const currentX = parseInt(particle.style.left) + vx;
+                        const currentY = parseInt(particle.style.top) + vy;
+                        particle.style.left = currentX + 'px';
+                        particle.style.top = currentY + 'px';
                         particle.style.opacity = 1 - (particleLife / 300);
+                        
                         requestAnimationFrame(animateParticle);
                     };
+                    
                     requestAnimationFrame(animateParticle);
                 }
             }
@@ -1420,58 +1429,55 @@
                     const healthIndicator = wall.querySelector('.wall-health');
                     const health = this.wallHealth[index];
                     healthIndicator.textContent = '█'.repeat(health) + '░'.repeat(4 - health);
-                    if (health <= 1) wall.style.background = '#ff6b6b';
-                    else if (health <= 2) wall.style.background = '#ffa726';
-                    else wall.style.background = '#ff9a9e';
+                    
+                    // Change wall color based on health
+                    if (health <= 1) {
+                        wall.style.background = '#ff6b6b';
+                    } else if (health <= 2) {
+                        wall.style.background = '#ffa726';
+                    } else {
+                        wall.style.background = '#ff9a9e';
+                    }
                 });
             }
 
             updateSpawnRate() {
-            if (this.gameTime < 20) {
-                this.stainSpawnRate = Math.max(1500 - (this.gameTime * 35), 200);
-            } else if (this.gameTime < 40) {
-                this.stainSpawnRate = Math.max(800 - ((this.gameTime - 20) * 25), 200);
-            } else {
-                this.stainSpawnRate = Math.max(300 - ((this.gameTime - 40) * 5), 150);
+                // Increase spawn rate over time (faster stain generation)
+                if (this.gameTime < 30) {
+                    this.stainSpawnRate = 2000 - (this.gameTime * 20); // 2000ms to 1400ms
+                } else if (this.gameTime < 60) {
+                    this.stainSpawnRate = 1400 - ((this.gameTime - 30) * 15); // 1400ms to 950ms
+                } else if (this.gameTime < 120) {
+                    this.stainSpawnRate = 950 - ((this.gameTime - 60) * 8); // 950ms to 470ms
+                }
+                
+                this.stainSpawnRate = Math.max(this.stainSpawnRate, 300); // Minimum 300ms
             }
-            this.stainSpawnRate = Math.max(this.stainSpawnRate, 150);
-        }
 
             updateUI() {
                 this.scoreElement.textContent = this.score;
                 this.timeElement.textContent = this.gameTime;
-                // Live update for best score
-                if (this.score > this.bestScore) {
-                    this.bestScore = this.score;
-                    this.bestElement.textContent = this.bestScore;
-                }
             }
 
             endGame() {
                 this.gameRunning = false;
                 
-                // Save best score to localStorage
-                localStorage.setItem('stainShieldBestScore', this.bestScore);
+                if (this.score > this.bestScore) {
+                    this.bestScore = this.score;
+                    this.bestElement.textContent = this.bestScore;
+                }
                 
                 this.finalScoreElement.textContent = this.score;
                 this.finalTimeElement.textContent = this.gameTime;
                 this.gameOverScreen.style.display = 'flex';
                 
-                // Clean up remaining game elements
+                // Clean up remaining stains
                 this.stains.forEach(stain => {
-                    if (stain.element && stain.element.parentNode) stain.element.parentNode.removeChild(stain.element);
+                    if (stain.element && stain.element.parentNode) {
+                        stain.element.parentNode.removeChild(stain.element);
+                    }
                 });
                 this.stains = [];
-
-                this.shields.forEach(shield => {
-                    if (shield.element && shield.element.parentNode) shield.element.parentNode.removeChild(shield.element);
-                });
-                this.shields = [];
-
-                const particles = this.gameArea.querySelectorAll('.particle');
-                particles.forEach(p => {
-                    if (p.parentNode) p.parentNode.removeChild(p);
-                });
             }
 
             gameLoop() {
@@ -1481,10 +1487,11 @@
                 this.updateStains();
                 this.updateSpawnRate();
                 
+                // Update game time every second
                 const currentTime = Math.floor(Date.now() / 1000);
                 if (currentTime !== this.lastTimeUpdate) {
                     this.gameTime++;
-                    this.updateUI(); // updateUI now handles best score display too
+                    this.updateUI();
                     this.lastTimeUpdate = currentTime;
                 }
                 
@@ -1495,20 +1502,26 @@
         let game;
         
         function startTutorialGame() {
-            if (!game) game = new StainShieldGame();
-            game.startGame();
+            if (game) {
+                game.startGame();
+            } else {
+                game = new StainShieldGame();
+                game.startGame();
+            }
         }
         
         function startGame() {
-            if (!game) game = new StainShieldGame();
-            game.startGame();
+            if (game) {
+                game.startGame();
+            } else {
+                game = new StainShieldGame();
+            }
         }
 
+        // Start the game when page loads
         window.addEventListener('load', () => {
             if (!game) {
-                game = new StainShieldGame(); 
-                // Tutorial is shown by default in constructor, so game won't auto-start here.
-                // startGame() will be called via tutorial button or restart button.
+                game = new StainShieldGame();
             }
         });
     </script>
