@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stain Shield Defense - Asian Paints</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #667eea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 400px;
+            height: 600px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .game-header {
+            background: #2196F3;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .game-area {
+            position: relative;
+            height: 450px;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+
+        .walls-container {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+        }
+
+        .wall {
+            flex: 1;
+            margin: 0 3px;
+            background: #ff9a9e;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            border: 2px solid #fff;
+        }
+
+        .wall-health {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: white;
+            font-weight: bold;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .wall-stain {
+            position: absolute;
+            opacity: 0.8;
+            /* Random organic shapes for wall stains */
+        }
+
+        .wall-stain.splatter-1 { border-radius: 65% 35% 45% 55% / 40% 60% 50% 50%; }
+        .wall-stain.splatter-2 { border-radius: 45% 55% 35% 65% / 60% 40% 50% 50%; }
+        .wall-stain.splatter-3 { border-radius: 55% 45% 65% 35% / 50% 50% 40% 60%; }
+        .wall-stain.splatter-4 { border-radius: 35% 65% 55% 45% / 50% 50% 60% 40%; }
+        .wall-stain.splatter-5 { border-radius: 60% 40% 50% 50% / 45% 55% 35% 65%; }
+
+        .stain {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #fff;
+            transition: all 0.1s ease;
+        }
+
+        /* Droplet shape variants */
+        .stain.droplet-1 {
+            border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%;
+            animation: wobble1 2s ease-in-out infinite;
+        }
+
+        .stain.droplet-2 {
+            border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+            animation: wobble2 1.8s ease-in-out infinite;
+        }
+
+        .stain.droplet-3 {
+            border-radius: 70% 30% 50% 50% / 40% 50% 50% 60%;
+            animation: wobble3 2.2s ease-in-out infinite;
+        }
+
+        .stain.droplet-4 {
+            border-radius: 50% 50% 30% 70% / 50% 40% 60% 50%;
+            animation: wobble4 1.9s ease-in-out infinite;
+        }
+
+        .stain.droplet-5 {
+            border-radius: 45% 55% 65% 35% / 55% 45% 35% 65%;
+            animation: wobble5 2.1s ease-in-out infinite;
+        }
+
+        /* Wobble animations for liquid effect */
+        @keyframes wobble1 {
+            0%, 100% { border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%; transform: rotate(0deg) scale(1); }
+            25% { border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%; transform: rotate(1deg) scale(1.02); }
+            50% { border-radius: 40% 60% 60% 40% / 40% 60% 40% 60%; transform: rotate(-1deg) scale(0.98); }
+            75% { border-radius: 70% 30% 50% 50% / 50% 40% 60% 50%; transform: rotate(0.5deg) scale(1.01); }
+        }
+
+        @keyframes wobble2 {
+            0%, 100% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; transform: rotate(0deg) scale(1); }
+            30% { border-radius: 55% 45% 35% 65% / 45% 55% 65% 35%; transform: rotate(-1.5deg) scale(1.03); }
+            60% { border-radius: 35% 65% 55% 45% / 65% 35% 45% 55%; transform: rotate(1deg) scale(0.97); }
+        }
+
+        @keyframes wobble3 {
+            0%, 100% { border-radius: 70% 30% 50% 50% / 40% 50% 50% 60%; transform: rotate(0deg) scale(1); }
+            40% { border-radius: 45% 55% 65% 35% / 55% 45% 35% 65%; transform: rotate(1.2deg) scale(1.04); }
+            80% { border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%; transform: rotate(-0.8deg) scale(0.96); }
+        }
+
+        @keyframes wobble4 {
+            0%, 100% { border-radius: 50% 50% 30% 70% / 50% 40% 60% 50%; transform: rotate(0deg) scale(1); }
+            20% { border-radius: 65% 35% 45% 55% / 35% 65% 55% 45%; transform: rotate(-1deg) scale(1.02); }
+            70% { border-radius: 35% 65% 55% 45% / 65% 35% 45% 55%; transform: rotate(1.5deg) scale(0.98); }
+        }
+
+        @keyframes wobble5 {
+            0%, 100% { border-radius: 45% 55% 65% 35% / 55% 45% 35% 65%; transform: rotate(0deg) scale(1); }
+            35% { border-radius: 60% 40% 40% 60% / 40% 60% 60% 40%; transform: rotate(0.8deg) scale(1.03); }
+            65% { border-radius: 30% 70% 50% 50% / 60% 40% 50% 50%; transform: rotate(-1.2deg) scale(0.97); }
+        }
+
+        .stain.coffee { background: #8B4513; }
+        .stain.juice { background: #FF6B35; }
+        .stain.mud { background: #5D4037; }
+
+        .shield {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid #00BCD4;
+            background: rgba(0, 188, 212, 0.2);
+            pointer-events: none;
+        }
+
+        .shield.small { border-color: #00BCD4; }
+        .shield.medium { border-color: #2196F3; }
+        .shield.large { border-color: #3F51B5; }
+
+        .shield-preview {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 188, 212, 0.8);
+            background: rgba(0, 188, 212, 0.1);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00BCD4;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .game-controls {
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .tap-instruction {
+            font-size: 15px;
+            color: #495057;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .brand-message {
+            font-size: 12px;
+            color: #6f42c1;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .game-over h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+
+        .game-over p {
+            font-size: 16px;
+            margin: 8px 0;
+            opacity: 0.9;
+        }
+
+        .restart-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .tutorial-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #ff9ff3 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            z-index: 1000;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .tutorial-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            height: 90vh;
+            max-height: 580px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .tutorial-slides {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .tutorial-slide {
+            width: 380px;
+            min-width: 380px;
+            height: 100%;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .slide-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 8px;
+        }
+
+        .slide-subtitle {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .brand-logo {
+            width: 140px;
+            height: 70px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-highlight {
+            background: linear-gradient(45deg, rgba(255, 107, 107, 0.1), rgba(238, 90, 36, 0.1));
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 8px;
+        }
+
+        .product-tagline {
+            font-size: 16px;
+            color: #ee5a24;
+            font-weight: 600;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .game-demo {
+            background: rgba(0, 188, 212, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            width: 100%;
+        }
+
+        .demo-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00BCD4;
+            margin-bottom: 15px;
+        }
+
+        .shield-demo {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+        }
+
+        .demo-shield {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: bold;
+            background: white;
+            flex-direction: column;
+        }
+
+        .demo-shield.small { border-color: #00BCD4; color: #00BCD4; width: 35px; height: 35px; }
+        .demo-shield.medium { border-color: #2196F3; color: #2196F3; }
+        .demo-shield.large { border-color: #3F51B5; color: #3F51B5; width: 45px; height: 45px; }
+
+        .shield-label {
+            font-size: 8px;
+            margin-top: 2px;
+        }
+
+        .stain-demo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .demo-stain {
+            width: 20px;
+            height: 20px;
+            border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%;
+            background: #8B4513;
+            border: 2px solid #fff;
+            margin: 0 5px;
+            animation: wobbleDemo 2s ease-in-out infinite;
+        }
+
+        @keyframes wobbleDemo {
+            0%, 100% { border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%; transform: rotate(0deg); }
+            50% { border-radius: 40% 60% 60% 40% / 40% 60% 40% 60%; transform: rotate(5deg); }
+        }
+
+        .bounce-arrow {
+            font-size: 24px;
+            color: #ff6b6b;
+            margin: 0 10px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        .wall-demo {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .demo-wall {
+            width: 30px;
+            height: 40px;
+            background: #ff9a9e;
+            border-radius: 5px 5px 0 0;
+            margin: 0 3px;
+            border: 2px solid #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .slide-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 107, 107, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #ff6b6b;
+            transform: scale(1.2);
+        }
+
+        .start-game-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .start-game-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .feature-list {
+            text-align: left;
+            font-size: 11px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .feature-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-icon {
+            color: #ff6b6b;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                max-width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .tutorial-carousel {
+                max-width: 95vw;
+                height: 85vh;
+                max-height: none;
+            }
+            
+            .tutorial-slide {
+                width: 95vw;
+                min-width: 95vw;
+                padding: 20px 15px;
+            }
+            
+            .brand-logo {
+                width: 120px;
+                height: 60px;
+                padding: 8px;
+            }
+            
+            .slide-title {
+                font-size: 18px;
+            }
+            
+            .slide-subtitle {
+                font-size: 12px;
+            }
+            
+            .product-title {
+                font-size: 16px;
+            }
+            
+            .feature-list {
+                font-size: 10px;
+            }
+            
+            .demo-shield {
+                width: 35px;
+                height: 35px;
+                font-size: 8px;
+            }
+            
+            .demo-shield.small {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .demo-shield.large {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div>Score: <span id="score">0</span></div>
+            <div>Time: <span id="time">0</span>s</div>
+            <div>Best: <span id="best">0</span></div>
+        </div>
+        
+        <div class="game-area" id="gameArea">
+            <div class="walls-container">
+                <div class="wall" data-wall="0">
+                    <div class="wall-health">████</div>
+                </div>
+                <div class="wall" data-wall="1">
+                    <div class="wall-health">████</div>
+                </div>
+                <div class="wall" data-wall="2">
+                    <div class="wall-health">████</div>
+                </div>
+                <div class="wall" data-wall="3">
+                    <div class="wall-health">████</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <div class="tap-instruction">🛡️ TAP = Small Shield • HOLD = Medium/Large Shield</div>
+            <div class="brand-message">🌊 Watch liquid stains bounce diagonally off walls!</div>
+            <div class="brand-message">⚡ Stains zigzag and change direction as they fall!</div>
+            <div class="brand-message">"Daag ko daag banne na de" - Asian Paints</div>
+        </div>
+
+        <div class="game-over" id="gameOver">
+            <h2>Walls Stained!</h2>
+            <p>Your Score: <span id="finalScore">0</span></p>
+            <p>Time Survived: <span id="finalTime">0</span>s</p>
+            <button class="restart-btn" onclick="startGame()">Protect Again</button>
+        </div>
+
+        <div class="tutorial-overlay" id="tutorialOverlay">
+            <div class="tutorial-carousel">
+                <div class="tutorial-slides" id="tutorialSlides">
+                    <!-- Slide 1: Welcome & Brand -->
+                    <div class="tutorial-slide">
+                        <div class="slide-header">
+                            <div class="brand-logo">
+                                <img src="https://static.asianpaints.com/etc.clientlibs/apcolourcatalogue/clientlibs/clientlib-global-unification/resources/images/header/asian-paints-logo.webp" alt="Asian Paints Logo" onerror="this.style.display='none'; this.parentNode.innerHTML='Asian Paints';" />
+                            </div>
+                            <div class="slide-title">Welcome to Stain Shield Defense!</div>
+                            <div class="slide-subtitle">Experience the power of stain protection</div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="product-highlight">
+                                <div class="product-title">Apcolite All Protek</div>
+                                <div class="product-tagline">"Daag ko daag banne na de"</div>
+                                <div class="product-desc">Premium emulsion with Lotus Effect Technology (LET) that repels liquid stains and protects your walls.</div>
+                            </div>
+                        </div>
+                        <div class="slide-navigation">
+                            <button class="nav-btn" id="prevBtn" disabled>←</button>
+                            <div class="slide-indicators">
+                                <div class="indicator active" onclick="goToSlide(0)"></div>
+                                <div class="indicator" onclick="goToSlide(1)"></div>
+                                <div class="indicator" onclick="goToSlide(2)"></div>
+                                <div class="indicator" onclick="goToSlide(3)"></div>
+                            </div>
+                            <button class="nav-btn" id="nextBtn">→</button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Product Features -->
+                    <div class="tutorial-slide">
+                        <div class="slide-header">
+                            <div class="slide-title">All Protek Technology</div>
+                            <div class="slide-subtitle">Advanced stain protection features</div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="product-highlight">
+                                <div class="feature-list">
+                                    <div class="feature-item">
+                                        <span class="feature-icon">🛡️</span>
+                                        <span>Lotus Effect Technology (LET) - Repels liquid stains</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <span class="feature-icon">✨</span>
+                                        <span>Advanced Stain Guard - Easy stain removal</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <span class="feature-icon">🔥</span>
+                                        <span>Flame Retardance - Reduces flame spread</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <span class="feature-icon">🌸</span>
+                                        <span>Pleasant Fragrance while painting</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <span class="feature-icon">📅</span>
+                                        <span>6 Years Warranty - Long-lasting protection</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <span class="feature-icon">🎨</span>
+                                        <span>Available in 2000+ shades, Shyne & Matt finish</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide-navigation">
+                            <button class="nav-btn" id="prevBtn">←</button>
+                            <div class="slide-indicators">
+                                <div class="indicator" onclick="goToSlide(0)"></div>
+                                <div class="indicator active" onclick="goToSlide(1)"></div>
+                                <div class="indicator" onclick="goToSlide(2)"></div>
+                                <div class="indicator" onclick="goToSlide(3)"></div>
+                            </div>
+                            <button class="nav-btn" id="nextBtn">→</button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: Game Mission & Controls -->
+                    <div class="tutorial-slide">
+                        <div class="slide-header">
+                            <div class="slide-title">🎯 Your Mission & Controls</div>
+                            <div class="slide-subtitle">Protect walls like All Protek protects your home</div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="game-demo">
+                                <div class="demo-title">Just like All Protek shields your walls from stains...</div>
+                                <div class="wall-demo">
+                                    <div class="demo-wall">████</div>
+                                    <div class="demo-wall">████</div>
+                                    <div class="demo-wall">████</div>
+                                    <div class="demo-wall">████</div>
+                                </div>
+                                <p style="font-size: 12px; color: #555; margin: 15px 0; line-height: 1.4;">You must protect these walls from bouncing liquid stains using energy shields.</p>
+                                
+                                <div class="demo-title" style="margin-top: 20px;">Master the Protection System:</div>
+                                <div class="shield-demo">
+                                    <div class="demo-shield small">
+                                        <span>TAP</span>
+                                        <span class="shield-label">Quick</span>
+                                    </div>
+                                    <div class="demo-shield medium">
+                                        <span>HOLD</span>
+                                        <span class="shield-label">Medium</span>
+                                    </div>
+                                    <div class="demo-shield large">
+                                        <span>LONG</span>
+                                        <span class="shield-label">Strong</span>
+                                    </div>
+                                </div>
+                                <p style="font-size: 12px; color: #555; margin-top: 15px; line-height: 1.4;">Tap for quick small shields, hold for medium shields, or press long for maximum protection!</p>
+                            </div>
+                        </div>
+                        <div class="slide-navigation">
+                            <button class="nav-btn" id="prevBtn">←</button>
+                            <div class="slide-indicators">
+                                <div class="indicator" onclick="goToSlide(0)"></div>
+                                <div class="indicator" onclick="goToSlide(1)"></div>
+                                <div class="indicator active" onclick="goToSlide(2)"></div>
+                                <div class="indicator" onclick="goToSlide(3)"></div>
+                            </div>
+                            <button class="nav-btn" id="nextBtn">→</button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: Game Mechanics & Start -->
+                    <div class="tutorial-slide">
+                        <div class="slide-header">
+                            <div class="slide-title">🌊 Bouncing Stains</div>
+                            <div class="slide-subtitle">Watch out for dynamic liquid movement!</div>
+                        </div>
+                        <div class="slide-content">
+                            <div class="game-demo">
+                                <div class="demo-title">Stains Bounce & Change Direction:</div>
+                                <div class="stain-demo">
+                                    <div class="demo-stain"></div>
+                                    <span class="bounce-arrow">→</span>
+                                    <div class="demo-stain"></div>
+                                    <span class="bounce-arrow">←</span>
+                                    <div class="demo-stain"></div>
+                                </div>
+                                <p style="font-size: 12px; color: #555; margin: 15px 0; line-height: 1.4;">Each wall has 4 health points. Strategic shield placement is key to victory!</p>
+                                <div class="product-tagline" style="margin: 15px 0;">Ready to experience All Protek protection?</div>
+                            </div>
+                            <button class="start-game-btn" onclick="startTutorialGame()">Start Protecting! 🚀</button>
+                        </div>
+                        <div class="slide-navigation">
+                            <button class="nav-btn" id="prevBtn">←</button>
+                            <div class="slide-indicators">
+                                <div class="indicator" onclick="goToSlide(0)"></div>
+                                <div class="indicator" onclick="goToSlide(1)"></div>
+                                <div class="indicator" onclick="goToSlide(2)"></div>
+                                <div class="indicator active" onclick="goToSlide(3)"></div>
+                            </div>
+                            <button class="nav-btn" id="nextBtn" disabled>→</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tutorial Carousel Functionality
+        let currentSlide = 0;
+        const totalSlides = 4;
+
+        function updateSlidePosition() {
+            const slides = document.getElementById('tutorialSlides');
+            const carousel = document.querySelector('.tutorial-carousel');
+            
+            // Use actual carousel width for accurate positioning
+            const slideWidth = carousel.offsetWidth;
+            
+            slides.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+            
+            // Update indicators
+            document.querySelectorAll('.indicator').forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+            
+            // Update navigation buttons
+            document.querySelectorAll('#prevBtn').forEach(btn => {
+                btn.disabled = currentSlide === 0;
+            });
+            document.querySelectorAll('#nextBtn').forEach(btn => {
+                btn.disabled = currentSlide === totalSlides - 1;
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlidePosition();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlidePosition();
+            }
+        }
+
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateSlidePosition();
+        }
+
+        // Initialize carousel navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners to navigation buttons
+            document.querySelectorAll('#nextBtn').forEach(btn => {
+                btn.addEventListener('click', nextSlide);
+            });
+            document.querySelectorAll('#prevBtn').forEach(btn => {
+                btn.addEventListener('click', prevSlide);
+            });
+            
+            // Initialize slide position
+            updateSlidePosition();
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                updateSlidePosition();
+            });
+        });
+
+        class StainShieldGame {
+            constructor() {
+                this.gameArea = document.getElementById('gameArea');
+                this.scoreElement = document.getElementById('score');
+                this.timeElement = document.getElementById('time');
+                this.bestElement = document.getElementById('best');
+                this.gameOverScreen = document.getElementById('gameOver');
+                this.tutorialOverlay = document.getElementById('tutorialOverlay');
+                this.finalScoreElement = document.getElementById('finalScore');
+                this.finalTimeElement = document.getElementById('finalTime');
+                
+                this.score = 0;
+                this.gameTime = 0;
+                this.wallHealth = [4, 4, 4, 4];
+                this.stains = [];
+                this.shields = [];
+                this.particles = [];
+                this.gameRunning = false;
+                this.lastStainSpawn = 0;
+                this.stainSpawnRate = 2000;
+                this.wallStains = [[], [], [], []];
+                
+                // Shield Charging with preview
+                this.isCharging = false;
+                this.chargeStartTime = 0;
+                this.chargePosition = { x: 0, y: 0 };
+                this.shieldPreview = null;
+                
+                this.bestScore = 0;
+                this.bestElement.textContent = this.bestScore;
+                
+                this.init();
+            }
+
+            init() {
+                // Mouse events
+                this.gameArea.addEventListener('mousedown', (e) => this.startCharging(e));
+                this.gameArea.addEventListener('mouseup', (e) => this.releaseShield(e));
+                this.gameArea.addEventListener('mouseleave', (e) => this.cancelCharging(e));
+                
+                // Touch events
+                this.gameArea.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const syntheticEvent = {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    };
+                    this.startCharging(syntheticEvent);
+                });
+                this.gameArea.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    const touch = e.changedTouches[0];
+                    const syntheticEvent = {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    };
+                    this.releaseShield(syntheticEvent);
+                });
+                this.gameArea.addEventListener('touchcancel', (e) => {
+                    e.preventDefault();
+                    this.cancelCharging();
+                });
+                
+                // Show tutorial on first load
+                this.showTutorial();
+            }
+
+            showTutorial() {
+                this.tutorialOverlay.style.display = 'flex';
+            }
+
+            hideTutorial() {
+                this.tutorialOverlay.style.display = 'none';
+            }
+
+            startGame() {
+                this.score = 0;
+                this.gameTime = 0;
+                this.wallHealth = [4, 4, 4, 4];
+                this.stains = [];
+                this.shields = [];
+                this.particles = [];
+                this.wallStains = [[], [], [], []];
+                this.gameRunning = true;
+                this.lastStainSpawn = 0;
+                this.stainSpawnRate = 2000;
+                
+                // Reset charging system
+                this.isCharging = false;
+                this.chargeStartTime = 0;
+                
+                // Clear any existing shield preview
+                if (this.shieldPreview && this.shieldPreview.parentNode) {
+                    this.shieldPreview.parentNode.removeChild(this.shieldPreview);
+                    this.shieldPreview = null;
+                }
+                
+                // Hide overlays
+                this.gameOverScreen.style.display = 'none';
+                this.hideTutorial();
+                
+                this.clearWallStains();
+                this.updateUI();
+                this.updateWallHealth();
+                this.gameLoop();
+            }
+
+            createShield(event) {
+                // This method is now deprecated in favor of the charging system
+                // Kept for compatibility during transition
+                if (!this.gameRunning || this.currentEnergy < 1) return;
+                
+                const rect = this.gameArea.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                
+                this.createShieldAtPosition(x, y, 'small');
+            }
+
+            startCharging(event) {
+                if (!this.gameRunning) return;
+                
+                const rect = this.gameArea.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                
+                this.isCharging = true;
+                this.chargeStartTime = Date.now();
+                this.chargePosition = { x, y };
+                
+                // Create shield preview
+                this.createShieldPreview(x, y);
+            }
+
+            releaseShield(event) {
+                if (!this.isCharging || !this.gameRunning) return;
+                
+                const chargeDuration = Date.now() - this.chargeStartTime;
+                let shieldSize;
+                
+                if (chargeDuration < 200) {
+                    shieldSize = 'small';
+                } else if (chargeDuration < 600) {
+                    shieldSize = 'medium';
+                } else {
+                    shieldSize = 'large';
+                }
+                
+                // Create shield (no energy requirement)
+                this.createShieldAtPosition(this.chargePosition.x, this.chargePosition.y, shieldSize);
+                
+                this.cancelCharging();
+            }
+
+            showEnergyWarning() {
+                // Flash the energy bar red briefly to indicate insufficient energy
+                const energyBar = this.energyBar;
+                energyBar.style.filter = 'hue-rotate(180deg)'; // Makes it red
+                setTimeout(() => {
+                    energyBar.style.filter = 'none';
+                }, 300);
+            }
+
+            cancelCharging() {
+                this.isCharging = false;
+                this.chargeStartTime = 0;
+                
+                // Remove shield preview
+                if (this.shieldPreview && this.shieldPreview.parentNode) {
+                    this.shieldPreview.parentNode.removeChild(this.shieldPreview);
+                    this.shieldPreview = null;
+                }
+            }
+
+            createShieldPreview(x, y) {
+                // Remove any existing preview first
+                if (this.shieldPreview && this.shieldPreview.parentNode) {
+                    this.shieldPreview.parentNode.removeChild(this.shieldPreview);
+                    this.shieldPreview = null;
+                }
+                
+                this.shieldPreview = document.createElement('div');
+                this.shieldPreview.className = 'shield-preview';
+                this.shieldPreview.style.left = (x - 30) + 'px';
+                this.shieldPreview.style.top = (y - 30) + 'px';
+                this.shieldPreview.style.width = '60px';
+                this.shieldPreview.style.height = '60px';
+                this.shieldPreview.style.opacity = '0.5';
+                this.gameArea.appendChild(this.shieldPreview);
+                
+                // Animate preview size based on charge duration
+                const animatePreview = () => {
+                    if (!this.isCharging || !this.shieldPreview) return;
+                    
+                    const chargeDuration = Date.now() - this.chargeStartTime;
+                    let size, opacity;
+                    
+                    if (chargeDuration < 200) {
+                        size = 40;
+                        opacity = 0.4;
+                    } else if (chargeDuration < 600) {
+                        size = 60;
+                        opacity = 0.6;
+                    } else {
+                        size = 80;
+                        opacity = 0.8;
+                    }
+                    
+                    this.shieldPreview.style.width = size + 'px';
+                    this.shieldPreview.style.height = size + 'px';
+                    this.shieldPreview.style.left = (this.chargePosition.x - size/2) + 'px';
+                    this.shieldPreview.style.top = (this.chargePosition.y - size/2) + 'px';
+                    this.shieldPreview.style.opacity = opacity;
+                    
+                    requestAnimationFrame(animatePreview);
+                };
+                
+                requestAnimationFrame(animatePreview);
+            }
+
+            createShieldAtPosition(x, y, size) {
+                const sizes = {
+                    small: { radius: 20, element: 40, class: 'small' },
+                    medium: { radius: 30, element: 60, class: 'medium' },
+                    large: { radius: 40, element: 80, class: 'large' }
+                };
+                
+                const config = sizes[size] || sizes.small;
+                
+                const shield = {
+                    x: x - config.radius,
+                    y: y - config.radius,
+                    radius: config.radius,
+                    element: this.createShieldElement(x - config.radius, y - config.radius, config.element, config.class),
+                    duration: 1200,
+                    created: Date.now(),
+                    size: size
+                };
+                
+                this.shields.push(shield);
+                
+                // Remove shield after duration
+                setTimeout(() => {
+                    if (shield.element && shield.element.parentNode) {
+                        shield.element.parentNode.removeChild(shield.element);
+                    }
+                    this.shields = this.shields.filter(s => s !== shield);
+                }, shield.duration);
+            }
+
+            createShieldElement(x, y, size, shieldClass) {
+                const shield = document.createElement('div');
+                shield.className = `shield ${shieldClass}`;
+                shield.style.left = x + 'px';
+                shield.style.top = y + 'px';
+                shield.style.width = size + 'px';
+                shield.style.height = size + 'px';
+                this.gameArea.appendChild(shield);
+                return shield;
+            }
+
+            updateEnergyBar() {
+                const segments = this.energyBar.querySelectorAll('.energy-segment');
+                segments.forEach((segment, index) => {
+                    if (index < this.currentEnergy) {
+                        segment.classList.add('filled');
+                    } else {
+                        segment.classList.remove('filled');
+                    }
+                });
+            }
+
+            regenerateEnergy() {
+                const now = Date.now();
+                if (now - this.lastEnergyRegen >= this.energyRegenRate && this.currentEnergy < this.maxEnergy) {
+                    this.currentEnergy++;
+                    this.lastEnergyRegen = now;
+                    this.updateEnergyBar();
+                }
+            }
+
+            spawnStain() {
+                const now = Date.now();
+                if (now - this.lastStainSpawn < this.stainSpawnRate) return;
+                
+                const stainTypes = this.getAvailableStainTypes();
+                const stainType = stainTypes[Math.floor(Math.random() * stainTypes.length)];
+                
+                // Random spawn position along the top edge
+                const spawnX = Math.random() * (this.gameArea.clientWidth - 24);
+                
+                // Random diagonal movement - some go straight down, others move diagonally
+                const velocityX = (Math.random() - 0.5) * 3; // -1.5 to +1.5 horizontal velocity
+                const velocityY = this.getStainSpeed(stainType);
+                
+                const stain = {
+                    x: spawnX,
+                    y: -24,
+                    type: stainType,
+                    velocityX: velocityX,
+                    velocityY: velocityY,
+                    element: this.createStainElement(stainType),
+                    bounces: 0, // Track number of bounces
+                    maxBounces: Math.floor(Math.random() * 3) + 1 // 1-3 bounces before going down
+                };
+                
+                this.stains.push(stain);
+                this.lastStainSpawn = now;
+            }
+
+            getAvailableStainTypes() {
+                if (this.gameTime < 30) {
+                    return ['coffee'];
+                } else if (this.gameTime < 60) {
+                    return ['coffee', 'juice'];
+                } else {
+                    return ['coffee', 'juice', 'mud'];
+                }
+            }
+
+            getStainSpeed(type) {
+                const baseSpeed = 1 + (this.gameTime / 60); // Gradually increase speed
+                const typeMultiplier = {
+                    'coffee': 1,
+                    'juice': 1.2,
+                    'mud': 0.8
+                };
+                return baseSpeed * (typeMultiplier[type] || 1);
+            }
+
+            createStainElement(type) {
+                const stain = document.createElement('div');
+                
+                // Randomly assign a droplet shape (1-5)
+                const dropletVariant = Math.floor(Math.random() * 5) + 1;
+                
+                // Random animation delay for more natural movement
+                const animationDelay = Math.random() * 2; // 0-2 seconds delay
+                
+                stain.className = `stain ${type} droplet-${dropletVariant}`;
+                stain.style.animationDelay = `${animationDelay}s`;
+                
+                this.gameArea.appendChild(stain);
+                return stain;
+            }
+
+            createWallStain(wallIndex, stainType, impactX) {
+                const wall = document.querySelector(`[data-wall="${wallIndex}"]`);
+                if (!wall) return;
+
+                const stainMark = document.createElement('div');
+                
+                // Randomly assign a splatter shape (1-5)
+                const splatterVariant = Math.floor(Math.random() * 5) + 1;
+                stainMark.className = `wall-stain splatter-${splatterVariant}`;
+                
+                // Different stain colors and sizes
+                const stainStyles = {
+                    coffee: { color: '#8B4513', size: Math.random() * 8 + 6 },
+                    juice: { color: '#FF6B35', size: Math.random() * 10 + 8 },
+                    mud: { color: '#5D4037', size: Math.random() * 12 + 10 }
+                };
+                
+                const style = stainStyles[stainType] || stainStyles.coffee;
+                stainMark.style.width = style.size + 'px';
+                stainMark.style.height = style.size + 'px';
+                stainMark.style.background = `radial-gradient(circle, ${style.color}, ${style.color}AA)`;
+                
+                // Position randomly on the wall, but weighted towards impact point
+                const wallRect = wall.getBoundingClientRect();
+                const gameAreaRect = this.gameArea.getBoundingClientRect();
+                const relativeImpactX = impactX - (wallRect.left - gameAreaRect.left);
+                const wallWidth = wallRect.width;
+                
+                // Create clustering around impact point with some randomness
+                const centerX = (relativeImpactX / wallWidth) * 100;
+                const randomOffset = (Math.random() - 0.5) * 40; // +/- 20%
+                const finalX = Math.max(5, Math.min(95, centerX + randomOffset));
+                
+                stainMark.style.left = finalX + '%';
+                stainMark.style.top = Math.random() * 60 + 20 + '%'; // Random vertical position
+                
+                wall.appendChild(stainMark);
+                this.wallStains[wallIndex].push(stainMark);
+            }
+
+            clearWallStains() {
+                for (let i = 0; i < 4; i++) {
+                    this.wallStains[i].forEach(stain => {
+                        if (stain.parentNode) {
+                            stain.parentNode.removeChild(stain);
+                        }
+                    });
+                    this.wallStains[i] = [];
+                }
+            }
+
+            updateStains() {
+                this.stains.forEach((stain, index) => {
+                    // Update position with velocity
+                    stain.x += stain.velocityX;
+                    stain.y += stain.velocityY;
+                    
+                    // Bounce off left and right walls
+                    if (stain.x <= 0 || stain.x >= this.gameArea.clientWidth - 24) {
+                        if (stain.bounces < stain.maxBounces) {
+                            stain.velocityX = -stain.velocityX * 0.8; // Reverse direction with some energy loss
+                            stain.x = Math.max(0, Math.min(this.gameArea.clientWidth - 24, stain.x)); // Keep in bounds
+                            stain.bounces++;
+                            
+                            // Add slight upward velocity on bounce for more dynamic movement
+                            stain.velocityY *= 0.9;
+                        } else {
+                            // After max bounces, just move straight down
+                            stain.velocityX = 0;
+                        }
+                    }
+                    
+                    if (stain.element) {
+                        stain.element.style.left = stain.x + 'px';
+                        stain.element.style.top = stain.y + 'px';
+                    }
+                    
+                    // Check shield collisions
+                    let hitShield = false;
+                    this.shields.forEach(shield => {
+                        const stainSize = 12; // All stains are now the same size
+                        const distance = Math.sqrt(
+                            Math.pow(stain.x + stainSize - (shield.x + shield.radius), 2) +
+                            Math.pow(stain.y + stainSize - (shield.y + shield.radius), 2)
+                        );
+                        
+                        if (distance < shield.radius) {
+                            hitShield = true;
+                            
+                            // Perfect repel - add bouncing effect
+                            this.score += this.getStainPoints(stain.type);
+                            this.createParticles(stain.x + stainSize, stain.y + stainSize);
+                            
+                            // Remove stain
+                            if (stain.element && stain.element.parentNode) {
+                                stain.element.parentNode.removeChild(stain.element);
+                            }
+                            this.stains.splice(index, 1);
+                        }
+                    });
+                    
+                    // Check wall collision
+                    if (!hitShield && stain.y > this.gameArea.clientHeight - 100) {
+                        const wallIndex = Math.floor(stain.x / (this.gameArea.clientWidth / 4));
+                        if (wallIndex >= 0 && wallIndex < 4) {
+                            const damage = 1; // All stains do same damage now
+                            this.wallHealth[wallIndex] = Math.max(0, this.wallHealth[wallIndex] - damage);
+                            this.createWallStain(wallIndex, stain.type, stain.x + 12);
+                            this.updateWallHealth();
+                            
+                            if (this.wallHealth.every(health => health <= 0)) {
+                                this.endGame();
+                            }
+                        }
+                        
+                        // Remove stain
+                        if (stain.element && stain.element.parentNode) {
+                            stain.element.parentNode.removeChild(stain.element);
+                        }
+                        this.stains.splice(index, 1);
+                    }
+                    
+                    // Remove stains that went too far down
+                    if (stain.y > this.gameArea.clientHeight + 50) {
+                        if (stain.element && stain.element.parentNode) {
+                            stain.element.parentNode.removeChild(stain.element);
+                        }
+                        this.stains.splice(index, 1);
+                    }
+                });
+            }
+
+            getStainPoints(type) {
+                const points = {
+                    'coffee': 10,
+                    'juice': 15,
+                    'mud': 20
+                };
+                return points[type] || 10;
+            }
+
+            createParticles(x, y) {
+                for (let i = 0; i < 6; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    this.gameArea.appendChild(particle);
+                    
+                    const angle = (Math.PI * 2 * i) / 6;
+                    const velocity = 2 + Math.random() * 2;
+                    const vx = Math.cos(angle) * velocity;
+                    const vy = Math.sin(angle) * velocity;
+                    
+                    let particleLife = 0;
+                    const animateParticle = () => {
+                        particleLife += 20;
+                        if (particleLife > 300) {
+                            if (particle.parentNode) {
+                                particle.parentNode.removeChild(particle);
+                            }
+                            return;
+                        }
+                        
+                        const currentX = parseInt(particle.style.left) + vx;
+                        const currentY = parseInt(particle.style.top) + vy;
+                        particle.style.left = currentX + 'px';
+                        particle.style.top = currentY + 'px';
+                        particle.style.opacity = 1 - (particleLife / 300);
+                        
+                        requestAnimationFrame(animateParticle);
+                    };
+                    
+                    requestAnimationFrame(animateParticle);
+                }
+            }
+
+            updateWallHealth() {
+                const walls = document.querySelectorAll('.wall');
+                walls.forEach((wall, index) => {
+                    const healthIndicator = wall.querySelector('.wall-health');
+                    const health = this.wallHealth[index];
+                    healthIndicator.textContent = '█'.repeat(health) + '░'.repeat(4 - health);
+                    
+                    // Change wall color based on health
+                    if (health <= 1) {
+                        wall.style.background = '#ff6b6b';
+                    } else if (health <= 2) {
+                        wall.style.background = '#ffa726';
+                    } else {
+                        wall.style.background = '#ff9a9e';
+                    }
+                });
+            }
+
+            updateSpawnRate() {
+                // Increase spawn rate over time (faster stain generation)
+                if (this.gameTime < 30) {
+                    this.stainSpawnRate = 2000 - (this.gameTime * 20); // 2000ms to 1400ms
+                } else if (this.gameTime < 60) {
+                    this.stainSpawnRate = 1400 - ((this.gameTime - 30) * 15); // 1400ms to 950ms
+                } else if (this.gameTime < 120) {
+                    this.stainSpawnRate = 950 - ((this.gameTime - 60) * 8); // 950ms to 470ms
+                }
+                
+                this.stainSpawnRate = Math.max(this.stainSpawnRate, 300); // Minimum 300ms
+            }
+
+            updateUI() {
+                this.scoreElement.textContent = this.score;
+                this.timeElement.textContent = this.gameTime;
+            }
+
+            endGame() {
+                this.gameRunning = false;
+                
+                if (this.score > this.bestScore) {
+                    this.bestScore = this.score;
+                    this.bestElement.textContent = this.bestScore;
+                }
+                
+                this.finalScoreElement.textContent = this.score;
+                this.finalTimeElement.textContent = this.gameTime;
+                this.gameOverScreen.style.display = 'flex';
+                
+                // Clean up remaining stains
+                this.stains.forEach(stain => {
+                    if (stain.element && stain.element.parentNode) {
+                        stain.element.parentNode.removeChild(stain.element);
+                    }
+                });
+                this.stains = [];
+            }
+
+            gameLoop() {
+                if (!this.gameRunning) return;
+                
+                this.spawnStain();
+                this.updateStains();
+                this.updateSpawnRate();
+                
+                // Update game time every second
+                const currentTime = Math.floor(Date.now() / 1000);
+                if (currentTime !== this.lastTimeUpdate) {
+                    this.gameTime++;
+                    this.updateUI();
+                    this.lastTimeUpdate = currentTime;
+                }
+                
+                requestAnimationFrame(() => this.gameLoop());
+            }
+        }
+
+        let game;
+        
+        function startTutorialGame() {
+            if (game) {
+                game.startGame();
+            } else {
+                game = new StainShieldGame();
+                game.startGame();
+            }
+        }
+        
+        function startGame() {
+            if (game) {
+                game.startGame();
+            } else {
+                game = new StainShieldGame();
+            }
+        }
+
+        // Start the game when page loads
+        window.addEventListener('load', () => {
+            if (!game) {
+                game = new StainShieldGame();
+            }
+        });
+    </script>
+</body>
+</html>
